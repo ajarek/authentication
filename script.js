@@ -2,6 +2,7 @@ import { Register } from "./class/register.js";
 import { Login } from "./class/login.js";
 import { EasyHTTP } from "./class/EasyHTTP-class.js";
 import { Alert } from "./class/alert.js";
+import { Personal } from "./class/personal.js";
 
 const http = new EasyHTTP();
 const root = document.getElementById("root");
@@ -24,7 +25,7 @@ function registerUser(e) {
     
     const data = {
       email: email,
-      password: hashed,
+      password:password,
     };
     http.post(
       "https://ajarek-my-database-default-rtdb.europe-west1.firebasedatabase.app/users.json",
@@ -49,6 +50,8 @@ function registerUser(e) {
   clearInputs("password");
 }
 
+
+
 function loginUser(e) {
   e.preventDefault();
   try {
@@ -61,14 +64,21 @@ function loginUser(e) {
       )
       .then((data) => {
         const arrOfObj1 = Object.values(data);
+        const id=Object.keys(data);
         const user = arrOfObj1.find((obj) => obj.email === email);
+        const index = arrOfObj1.indexOf(user);
+        const idUser = id[index];
+        console.log(idUser);
         if (user.password === password) {
           const alert = new Alert(
-            "Successful login!",
+            "Successful login " +user.email.split("@")[0],
             "green",
             "#alert-container"
           );
           alert.showAlert();
+          document.querySelector("#root").innerHTML = "";
+          const personal = new Personal(idUser);
+          document.querySelector("#root").append(personal.render());
         } else {
           const alert = new Alert(
             "Error: wrong password",
