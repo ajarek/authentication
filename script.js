@@ -105,8 +105,6 @@ function loginUser(e) {
   clearInputs("password1");
 }
 
-
-
 function completeData(e) {
   e.preventDefault();
   try {
