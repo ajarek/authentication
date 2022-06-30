@@ -3,8 +3,20 @@ export class Personal{
         this.id=id;
        
     }
+    renderBoard(user){
+        const board=document.createElement("div");
+        board.setAttribute("class","board mb-4 ");
+        board.innerHTML=`
+        <div class="board-header">
+            <button id="board-button" data-id="${this.id}" class="btn btn-primary">${user} your personal info</button class="btn btn-primary">
+        </div>`
+        return board;
+    }
+
    render(){
     const formPersonal= document.createElement("form");
+    const h4=document.createElement("h4");
+    h4.innerHTML="Complete the data";
     formPersonal.setAttribute("class","form-personal  border border-2 rounded rounded-3");
     formPersonal.style.width="25rem";
     const hiddenId=document.createElement("input");
@@ -24,7 +36,7 @@ export class Personal{
     const submit = document.createElement("button");
     submit.innerText = "Submit";
     submit.setAttribute("class","btn btn-success mb-3");
-    formPersonal.append(hiddenId,photoInput,phoneInput,submit);
+    formPersonal.append(h4,hiddenId,photoInput,phoneInput,submit);
     return formPersonal;
 }
 }
