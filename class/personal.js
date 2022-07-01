@@ -8,7 +8,7 @@ export class Personal {
     board.innerHTML = `
         <div class="board-header">
             <button id="board-button" data-id="${this.id}" class="btn btn-primary mb-2">${user} your personal info</button class="btn btn-primary">
-            <button id="close-board" class="btn btn-secondary">❌ log out</button>
+            <button id="close-board" class="btn btn-secondary mb-2">❌ log out</button>
         </div>`;
     return board;
   }
