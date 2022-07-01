@@ -1,15 +1,16 @@
-export class DisplayData{
-    constructor(photo,email,password,phone){
-        this.photo=photo;
-        this.email=email;
-        this.password=password;
-        this.phone=phone;
-    }
-    render(){
-const container=document.createElement("div");
-container.setAttribute("class","container");
-container.innerHTML=`
-<div class="card" style="width: 18rem;">
+export class DisplayData {
+  constructor(photo, email, password, phone) {
+    this.photo = photo;
+    this.email = email;
+    this.password = password;
+    this.phone = phone;
+  }
+  render() {
+    const container = document.createElement("div");
+    container.setAttribute("class", "container");
+    container.innerHTML = `
+<button id="close-personal" class="btn btn-secondary">❌ log out</button>
+<div class="card border" style="width: 18rem;">
   <img src="${this.photo}" class="card-img-top" alt="...">
   
   <ul class="list-group list-group-flush">
@@ -18,8 +19,8 @@ container.innerHTML=`
     <li class="list-group-item">${this.phone}</li>
   </ul>
   </div>
-</div>`
-    
+</div>`;
+
     return container;
-}
+  }
 }

@@ -10,7 +10,6 @@ const root = document.getElementById("root");
 const register = new Register("ajarek@poczta.onet.pl", "hasło");
 const login = new Login("ajarek@poczta.onet.pl", "hasło");
 
-
 function renderInputs() {
   root.append(register.render(), login.render());
   const formRegister = document.querySelector("#register");
@@ -24,10 +23,10 @@ function registerUser(e) {
   try {
     const email = document.querySelector('input[name="email"]').value;
     const password = document.querySelector('input[name="password"]').value;
-    
+
     const data = {
       email: email,
-      password:password,
+      password: password,
     };
     http.post(
       "https://ajarek-my-database-default-rtdb.europe-west1.firebasedatabase.app/users.json",
@@ -64,24 +63,30 @@ function loginUser(e) {
       )
       .then((data) => {
         const arrOfObj1 = Object.values(data);
-        const id=Object.keys(data);
+        const id = Object.keys(data);
         const user = arrOfObj1.find((obj) => obj.email === email);
         const index = arrOfObj1.indexOf(user);
         const idUser = id[index];
 
         if (user.password === password) {
           const alert = new Alert(
-            "Successful login " +user.email.split("@")[0],
+            "Successful login " + user.email.split("@")[0],
             "green",
             "#alert-container"
           );
           alert.showAlert();
           document.querySelector("#root").innerHTML = "";
-          
+
           const personal = new Personal(idUser);
-          document.querySelector("#root").append(personal.renderBoard(user.email.split("@")[0]),personal.render());
-          completeDataEvent()
-          displayPersonalInfoEvent()
+          document
+            .querySelector("#root")
+            .append(
+              personal.renderBoard(user.email.split("@")[0]),
+              personal.render()
+            );
+          completeDataEvent();
+          displayPersonalInfoEvent();
+          closeBoardEvent();
         } else {
           const alert = new Alert(
             "Error: wrong password",
@@ -111,10 +116,10 @@ function completeData(e) {
     const hiddenId = document.querySelector('input[name="id"]').value;
     const photo = document.querySelector('input[name="photo"]').value;
     const phone = document.querySelector('input[name="phone"]').value;
-    
+
     const data = {
       photo: photo,
-      phone:phone,
+      phone: phone,
     };
     console.log(data);
     http.patch(
@@ -132,7 +137,7 @@ function completeData(e) {
       "Error: " + error.message,
       "red",
       "#alert-container"
-    )
+    );
     alert.showAlert();
   }
   clearInputs("photo");
@@ -140,44 +145,70 @@ function completeData(e) {
 }
 
 function completeDataEvent() {
-  document.querySelector(".form-personal").addEventListener("submit", completeData);
+  document
+    .querySelector(".form-personal")
+    .addEventListener("submit", completeData);
 }
 
 function displayPersonalInfo(e) {
   e.preventDefault();
   document.querySelector("#root").innerHTML = "";
-  const dataId=e.target.dataset.id;
- 
+  const dataId = e.target.dataset.id;
+
   try {
     http
-    .get(
-      `https://ajarek-my-database-default-rtdb.europe-west1.firebasedatabase.app/users/${dataId}.json`
-    )
-    .then((data) => {
-      const displayData = new DisplayData(data.photo,data.phone,data.email,data.password);
-  document.querySelector("#root").append(displayData.render());
-     
-      
-    })
+      .get(
+        `https://ajarek-my-database-default-rtdb.europe-west1.firebasedatabase.app/users/${dataId}.json`
+      )
+      .then((data) => {
+        const displayData = new DisplayData(
+          data.photo,
+          data.phone,
+          data.email,
+          data.password
+        );
+        document.querySelector("#root").append(displayData.render());
+        closePersonalInfoEvent();
+      });
   } catch (error) {
     const alert = new Alert(
       "Error: " + error.message,
       "red",
       "#alert-container"
-    )
+    );
     alert.showAlert();
   }
-  
-  
 }
 
-function displayPersonalInfoEvent(){
-  document.querySelector("#board-button").addEventListener("click",displayPersonalInfo)
-    
+function displayPersonalInfoEvent() {
+  document
+    .querySelector("#board-button")
+    .addEventListener("click", displayPersonalInfo);
 }
 function clearInputs(nameInputs) {
   document.querySelector(`input[name="${nameInputs}"]`).value = "";
 }
 
+function closePersonalInfo(e) {
+  e.preventDefault();
+  document.querySelector("#root").innerHTML = "";
+  renderInputs();
+}
+
+function closeBoard(e) {
+  e.preventDefault();
+  document.querySelector("#root").innerHTML = "";
+  renderInputs();
+}
+
+function closePersonalInfoEvent() {
+  document
+    .querySelector("#close-personal")
+    .addEventListener("click", closePersonalInfo);
+}
+
+function closeBoardEvent() {
+  document.querySelector("#close-board").addEventListener("click", closeBoard);
+}
+
 renderInputs();
-//https://randomuser.me/api/portraits/men/1.jpg
